@@ -1,21 +1,29 @@
-#!/usr/bin/perl -w 
-if (@ARGV)
-{
-	@file_list = @ARGV;
+#!/usr/bin/perl -w
+
+if (@ARGV) {
+    @file_list = @ARGV;
 } 
-else 
-{
-	print(“ERROR: no args\n”);
-	exit 1;
-} 
-foreach (@file_list)
-{ 
-	DO THE STUFF HERE
+else {
+    print "ERROR: no args\n";
+    exit 1;
 } 
 
-print "complete all deletions? [y]: ";
-$input = <STDIN>;  
+sub prompt {
+    my ($query) = @_;
+    print $query;
+    chomp(my $answer = <STDIN>);
+    return lc($answer) eq 'y';
+}
 
-DO THE STUFF HERE
+@files_to_delete = ();
+foreach $file(@file_list) {
+    if (prompt("delete $file? [y]: ")) {
+        push @files_to_delete, $file;
+    }
+} 
+
+if (prompt("complete all deletions? [y]: ")) {
+	unlink @files_to_delete;
+}
 
 exit 0;
